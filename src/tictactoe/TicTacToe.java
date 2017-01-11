@@ -17,7 +17,7 @@ public class TicTacToe {
 
     static final int BOARD_SIZE=3;
     Random random = new Random();
-    char [][] xo= new char[BOARD_SIZE][BOARD_SIZE];
+    protected char [][] xo= new char[BOARD_SIZE][BOARD_SIZE];
 
     {
         for (int r=0; r<BOARD_SIZE; r++)
@@ -34,6 +34,11 @@ public class TicTacToe {
             }
             System.out.println();
         }
+    }
+    
+    public boolean isBlank(int r, int c)
+    {
+        return xo[r][c]=='-';
     }
     
     public char getBoardValue(int r, int c)
