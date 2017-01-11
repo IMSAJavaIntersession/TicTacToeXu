@@ -36,6 +36,20 @@ public class TicTacToe {
         }
     }
     
+    public char getBoardValue(int r, int c)
+    {
+        return xo[r][c];
+    }
+    public boolean setMove(int r, int c, boolean bComputer)
+    {
+        if ( xo[r][c] !='-')
+            return false;
+        if ( bComputer )
+            xo[r][c] = 'O';
+        else
+            xo[r][c] = 'X';
+        return true;
+    }
     public boolean move()
     {
         Scanner scan = new Scanner(System.in);
@@ -43,10 +57,7 @@ public class TicTacToe {
             System.out.println("enter your move");
             int r = scan.nextInt();
             int c = scan.nextInt();
-            if ( xo[r][c] !='-')
-                return false;
-            xo[r][c] = 'X';
-            return true;
+            return setMove(r,c,false);
         }
         catch (Exception e){
             return false;
