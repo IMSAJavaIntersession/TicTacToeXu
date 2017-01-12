@@ -84,10 +84,10 @@ public class TicTacToeJrame extends javax.swing.JFrame {
         // create radio items
         ButtonGroup group = new ButtonGroup();
         JRadioButtonMenuItem rbMenuItem=new JRadioButtonMenuItem("Fun");
-        rbMenuItem.setSelected(true);
         rbMenuItem.setMnemonic(KeyEvent.VK_F);
+        rbMenuItem.setSelected(!proLevel);
         group.add(rbMenuItem);
-        menuItem.addActionListener(new java.awt.event.ActionListener() {
+        rbMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 FunLevelActionPerformed(evt);
             }
@@ -96,8 +96,9 @@ public class TicTacToeJrame extends javax.swing.JFrame {
 
         rbMenuItem=new JRadioButtonMenuItem("Pro");
         rbMenuItem.setMnemonic(KeyEvent.VK_P);
+        rbMenuItem.setSelected(proLevel);
         group.add(rbMenuItem);
-        menuItem.addActionListener(new java.awt.event.ActionListener() {
+        rbMenuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 ProLevelActionPerformed(evt);
             }
@@ -123,8 +124,10 @@ public class TicTacToeJrame extends javax.swing.JFrame {
     }
     private void ActionPerformed(BoardButton button, java.awt.event.ActionEvent evt) {                                    
         // TODO add your handling code here:
-        if (board.isGameOver())
+        if (board.isGameOver()) {
+            System.out.println("game over");
             return;
+        }
         if ( !board.setMove(button.getRow(), button.getCol(),false )) {
             this.setTitle("Bad Move. Try again");
             return;
@@ -154,25 +157,30 @@ public class TicTacToeJrame extends javax.swing.JFrame {
         this.setTitle("New Game");
     }
     
-    private void FunLevelActionPerformed(java.awt.event.ActionEvent evt) {  
+    private void FunLevelActionPerformed(java.awt.event.ActionEvent evt) {
+        System.out.println("fun");  
         proLevel=false;
     }
     
     private void ProLevelActionPerformed(java.awt.event.ActionEvent evt) {  
         proLevel=true;
-        System.out.println("pro");
+        System.out.println("pro");  
     }
     private void createBoard()
     {
-        if (proLevel)
+        if (proLevel) {
             board = new TicTacToePro();
-        else
+            System.out.println("pro board");
+        }
+        else {
             board = new TicTacToe();
+            System.out.println("fun board");
+        }
     }
     
     TicTacToe       board;
     BoardButton[][] jButtons;
-    boolean         proLevel=false;
+    boolean         proLevel=true;
     {
         createBoard();
     }
