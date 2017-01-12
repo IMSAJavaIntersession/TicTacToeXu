@@ -123,6 +123,8 @@ public class TicTacToeJrame extends javax.swing.JFrame {
     }
     private void ActionPerformed(BoardButton button, java.awt.event.ActionEvent evt) {                                    
         // TODO add your handling code here:
+        if (board.isGameOver())
+            return;
         if ( !board.setMove(button.getRow(), button.getCol(),false )) {
             this.setTitle("Bad Move. Try again");
             return;

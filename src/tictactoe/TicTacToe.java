@@ -45,6 +45,7 @@ public class TicTacToe {
     {
         return xo[r][c];
     }
+    
     public boolean setMove(int r, int c, boolean bComputer)
     {
         if ( xo[r][c] !='-')
@@ -71,28 +72,69 @@ public class TicTacToe {
     
     public void computer()
     {
+        if ( gameOver() )
+            return;
         int r,c;
         do {
             r = random.nextInt(BOARD_SIZE);
             c = random.nextInt(BOARD_SIZE);
-        } while (xo[r][c] !='-');
+        } while (!isBlank(r, c));
         xo[r][c]='O';
     }
+    
+    private boolean isRowWon(int r)
+    {
+        if ( isBlank(r, 0) || isBlank(r, 1) || isBlank(r, 2) )
+            return false;
+        if (xo[r][0] == xo[r][1] && xo[r][1]==xo[r][2])
+            return true;
+        return false;
+    }
+        
+    private boolean isColWon(int c)
+    {
+        if ( isBlank(0, c) || isBlank(1, c) || isBlank(2, c) )
+            return false;
+        if (xo[0][c] == xo[1][c] && xo[1][c]==xo[2][c])
+            return true;
+        return false;
+    }
+    
+    private boolean isCrossWon()
+    {
+        if ( isBlank(0,0) || isBlank(1, 1) || isBlank(2, 2) )
+            return false;            
+        if ( xo[0][0] == xo[1][1] && xo[1][1]==xo[2][2])
+            return true;
+        return false;
+    }
+    
+    private boolean isBackCrossWon()
+    {
+        if ( isBlank(2,0) || isBlank(1, 1) || isBlank(0, 2) )
+            return false;            
+        if ( xo[2][0] == xo[1][1] && xo[1][1]==xo[0][2])
+            return true;
+        return false;
+    }
+    
     public boolean won()
     {
         for (int r=0; r<BOARD_SIZE; r++)
         {
-            if (xo[r][0] != '-' && xo[r][0] == xo[r][1] && xo[r][1]==xo[r][2])
-                return true;
-            if (xo[0][r] != '-' &&xo[0][r] == xo[1][r] && xo[1][r]==xo[2][r])
-                return true;                
+            if (isRowWon(r))
+                return bGameOver=true;
+            if (isColWon(r))
+                return bGameOver=true;            
         }
         
-        if (xo[0][0] != '-' && xo[0][0] == xo[1][1] && xo[1][1]==xo[2][2])
-            return true;
+        if (isCrossWon())
+            return bGameOver=true;
+        if (isBackCrossWon())
+            return bGameOver=true;
         
         if (xo[0][2] != '-' && xo[0][2]== xo[1][1] && xo[1][1]==xo[2][0])
-            return true;
+            return bGameOver=true;
         return false;
     }
     
@@ -100,9 +142,14 @@ public class TicTacToe {
     {
         for (int r=0; r<BOARD_SIZE; r++)
             for (int c =0; c<BOARD_SIZE; c++)
-                if (xo[r][c] == '-')
+                if (isBlank(r, c))
                     return false;  
-        return true;
+        return bGameOver=true;
     }
     
+    boolean isGameOver() {
+        return bGameOver;
+    }
+    
+    boolean bGameOver=false;
 }
