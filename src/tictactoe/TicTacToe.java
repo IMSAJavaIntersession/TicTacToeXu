@@ -46,6 +46,11 @@ public class TicTacToe {
         return xo[r][c];
     }
     
+    void rollback(int r, int c)
+    {
+        xo[r][c] ='-';
+        bGameOver = false;
+    }
     public boolean setMove(int r, int c, boolean bComputer)
     {
         if ( xo[r][c] !='-')
