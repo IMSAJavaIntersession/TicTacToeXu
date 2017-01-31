@@ -42,6 +42,37 @@ public class TicTacToeJrame extends javax.swing.JFrame {
         private BoardButton button;
     }
     
+    public static int vk(char key)
+    {
+        switch(key) {
+            case 'F':
+                return KeyEvent.VK_F;
+            case 'P':
+                return KeyEvent.VK_P;
+        }
+        return KeyEvent.VK_UNDEFINED;
+    }
+    
+    public void createRadioMenu(JMenu menu2, String []items, int selected)
+    {
+        // create radio items
+        ButtonGroup group = new ButtonGroup();
+        for (int i=0; i<items.length; i++)
+        {
+            JRadioButtonMenuItem rbMenuItem=new JRadioButtonMenuItem(items[i]);
+            rbMenuItem.setMnemonic(vk(items[i].charAt(0)));
+            rbMenuItem.setSelected(selected==i);
+            group.add(rbMenuItem);
+            final int game=i;
+            rbMenuItem.addActionListener(new java.awt.event.ActionListener() {
+                public void actionPerformed(java.awt.event.ActionEvent evt) {
+                    gameLevelActionPerformed(game, evt);
+                }
+            });
+            menu2.add(rbMenuItem);
+        }
+    }
+    
     private void initBoard()
     {
         jButtons = new BoardButton[TicTacToe.BOARD_SIZE][TicTacToe.BOARD_SIZE];
@@ -70,9 +101,7 @@ public class TicTacToeJrame extends javax.swing.JFrame {
         
         JMenuBar menuBar1 = new JMenuBar();
         JMenu menu1 = new JMenu("File");
-        JMenu menu2 = new JMenu("Level");
         menuBar1.add(menu1);
-        menuBar1.add(menu2);
         JMenuItem menuItem = new JMenuItem("New Game", KeyEvent.VK_N);
         menuItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -81,6 +110,11 @@ public class TicTacToeJrame extends javax.swing.JFrame {
         });
         menu1.add(menuItem);
         
+        JMenu menu2 = new JMenu("Level");
+        createRadioMenu(menu2, new String[]{"Fun","Pro"}, proLevel?1:0);
+        menuBar1.add(menu2);
+        
+        /*
         // create radio items
         ButtonGroup group = new ButtonGroup();
         JRadioButtonMenuItem rbMenuItem=new JRadioButtonMenuItem("Fun");
@@ -104,7 +138,7 @@ public class TicTacToeJrame extends javax.swing.JFrame {
             }
         });
         menu2.add(rbMenuItem);
-        
+        */
         setJMenuBar(menuBar1);
     }
     
@@ -165,6 +199,13 @@ public class TicTacToeJrame extends javax.swing.JFrame {
     private void ProLevelActionPerformed(java.awt.event.ActionEvent evt) {  
         proLevel=true;
         System.out.println("pro");  
+    }
+    
+    private void gameLevelActionPerformed(int level, java.awt.event.ActionEvent evt) {  
+        if (level>0)
+            proLevel=true;
+        else
+            proLevel=false;
     }
     private void createBoard()
     {
