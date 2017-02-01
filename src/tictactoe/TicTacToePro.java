@@ -65,6 +65,7 @@ public class TicTacToePro  extends TicTacToe{
     // prevent opponent piece to 
     private boolean findBestMove()
     {
+        // pick a corner move to prevent opponent to form two winning options
         return false;
     }
     
@@ -77,6 +78,8 @@ public class TicTacToePro  extends TicTacToe{
         if (findWinningMove())
             return;
         if (preventLosingMove())
+            return;
+        if (findBestMove())
             return;
         super.computer();
     }
