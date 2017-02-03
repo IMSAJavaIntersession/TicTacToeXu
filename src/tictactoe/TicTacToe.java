@@ -87,7 +87,7 @@ public class TicTacToe {
         xo[r][c]='O';
     }
     
-    private boolean isRowWon(int r)
+    protected boolean isRowWon(int r)
     {
         if ( isBlank(r, 0) || isBlank(r, 1) || isBlank(r, 2) )
             return false;
@@ -96,7 +96,7 @@ public class TicTacToe {
         return false;
     }
         
-    private boolean isColWon(int c)
+    protected boolean isColWon(int c)
     {
         if ( isBlank(0, c) || isBlank(1, c) || isBlank(2, c) )
             return false;
@@ -105,7 +105,7 @@ public class TicTacToe {
         return false;
     }
     
-    private boolean isCrossWon()
+    protected boolean isCrossWon()
     {
         if ( isBlank(0,0) || isBlank(1, 1) || isBlank(2, 2) )
             return false;            
@@ -114,7 +114,7 @@ public class TicTacToe {
         return false;
     }
     
-    private boolean isBackCrossWon()
+    protected boolean isBackCrossWon()
     {
         if ( isBlank(2,0) || isBlank(1, 1) || isBlank(0, 2) )
             return false;            
