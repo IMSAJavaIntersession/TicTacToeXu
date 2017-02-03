@@ -12,17 +12,72 @@ package tictactoe;
 public class TicTacToePro  extends TicTacToe{
     int moves=0; // computer moves
     final static char COMPUTER='O';
-    private boolean choose1stMove() {
-        if (isBlank(1,1)) {
-            xo[1][1]=COMPUTER;
+    
+    private boolean isCorner(int r, int c)
+    {
+        if (r==c && r!=1)
             return true;
-        }
-        // else choose a corner move
-        if ( moves==1) {
-            return setMove(0,0,true);
-        }
+        if (r+c==2 && r!=1)
+            return true;
         return false;
     }
+    // transform coordinates to next square
+    private int transform(int orig, int trans)
+    {
+        orig = trans-orig;
+        if (orig<0)
+            orig *= -1;  
+        return orig;
+    }
+    
+    private void counterCornerMove(int r, int c)
+    {
+        int choice = random.nextInt(6); // 3 different moves
+        switch (choice) {
+            case 0:
+                setMove(2-r,2-c,true);
+                break;
+            case 1:
+                setMove(1,1,true);
+            case 2:
+                r = transform(r, 1);
+                setMove(r,c,true);
+                break;
+            case 3:
+                c = transform(c, 1);
+                setMove(r,c,true);
+                break;
+            case 4:
+                r = transform(r, 2);
+                setMove(r,c,true);
+                break;
+            case 5:
+            default:
+                c = transform(c, 2);
+                setMove(r,c,true);
+                break;
+        }
+    }
+    private boolean choose1stMove() {
+        if ( moves>1)
+            return false;
+        // 
+        if (!isBlank(1,1)) // choose a corner move
+            return setMove(0,0,true);
+        // opposite corner
+        if ( !isBlank(0,0))
+            counterCornerMove(0,0);
+        else if ( !isBlank(2,2))
+            counterCornerMove(2,2);
+        else if ( !isBlank(0,2))
+            counterCornerMove(0,2);
+        else if ( !isBlank(2,0))
+            counterCornerMove(2,0);
+        else
+            return setMove(1,1,true);
+        return true;
+    }
+    
     private boolean findWinningMove(boolean test)
     {
         for(int r=0; r<this.BOARD_SIZE; r++) {
