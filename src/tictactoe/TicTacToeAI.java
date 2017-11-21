@@ -5,6 +5,8 @@ package tictactoe;
 
 import static java.lang.Math.max;
 import static java.lang.Math.min;
+import java.util.Map;
+import java.util.TreeMap;
 
 // http://www.geeksforgeeks.org/minimax-algorithm-in-game-theory-set-3-tic-tac-toe-ai-finding-optimal-move/
 public class TicTacToeAI extends TicTacToe {
@@ -35,28 +37,15 @@ public class TicTacToeAI extends TicTacToe {
             return score+depth;
         if (gameOver())
             return 0;
-        if ( isMax ) {
-            score = -10000;
-            for (int r=0; r<BOARD_SIZE; r++) {
-                for (int c=0; c<BOARD_SIZE; c++) {
-                    if ( !isBlank(r, c) )
-                        continue;
-                    setMove(r, c, true);
-                    score = max(score, minimax(depth+1, !isMax));
-                    rollback(r,c);
-                }
-            }
-        }
-        else {
-            score = 10000;
-            for (int r=0; r<BOARD_SIZE; r++) {
-                for (int c=0; c<BOARD_SIZE; c++) {
-                    if ( !isBlank(r, c) )
-                        continue;
-                    setMove(r, c, false);
-                    score = min(score, minimax(depth+1, !isMax));
-                    rollback(r,c);
-                }
+        score = isMax?-10000:10000;
+        for (int r=0; r<BOARD_SIZE; r++) {
+            for (int c=0; c<BOARD_SIZE; c++) {
+                if ( !isBlank(r, c) )
+                    continue;
+                setMove(r, c, isMax);
+                int newScore=minimax(depth+1, !isMax);
+                score = isMax?max(score, newScore):min(score, newScore);
+                rollback(r,c);
             }
         }
         return score;
@@ -64,30 +53,55 @@ public class TicTacToeAI extends TicTacToe {
     public void computer()
     {
         moves++;
-        //if (choose1stMove()) 
-        //    return;
-        System.out.println("computer move "+moves);
-        int best = -10000;
-        int bestR=-1;
-        int bestC=-1;
+        BestMove bm=findBestMove(true);
+        if (bm.row>=0) {
+            setMove(bm.row, bm.col, true);
+            System.out.println("computer move "+moves+":"+bm.row+","+bm.col+". Score="+bm.score);
+            printBoard();
+        }
+        else
+            System.out.println("computer skip move "+moves);
+    }
+    
+    String board2String()
+    {
+        StringBuilder sb=new StringBuilder();
+        for (int r=0; r<BOARD_SIZE; r++) {
+            for (int c=0; c<BOARD_SIZE; c++) {
+                sb.append(xo[r][c]);
+            }
+        }
+        return sb.toString();
+    }
+    class BestMove
+    {
+        int score;
+        int row;
+        int col;
+        BestMove()
+        {
+            row=-1; col=-1;
+        }
+    }
+    //Map<String, BestMove> completeGameTree=new TreeMap<>();
+    BestMove findBestMove(boolean isMax)
+    {        
+        BestMove bm=new BestMove();
+        bm.score = isMax?-10000:10000;
         for (int r=0; r<BOARD_SIZE; r++) {
             for (int c=0; c<BOARD_SIZE; c++) {
                 if (!isBlank(r,c))
                     continue;
-                setMove(r, c, true);
-                int score=minimax(0, false);
+                setMove(r, c, isMax);
+                int score=minimax(0, !isMax);
                 rollback(r,c);
-                if (score>best) {
-                    best=score;
-                    bestR=r;
-                    bestC=c;
+                if (isMax && score>bm.score || !isMax &&score<bm.score) {
+                    bm.score=score;
+                    bm.row=r;
+                    bm.col=c;
                 }
             }
         }
-        if (bestR>=0) {
-            setMove(bestR, bestC, true);
-            System.out.println("computer move "+moves+":"+bestR+","+bestC+". Score="+best);
-            printBoard();
-        }
+        return bm;
     }
 }
