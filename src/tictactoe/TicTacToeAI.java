@@ -29,8 +29,10 @@ public class TicTacToeAI extends TicTacToe {
     
     int minimax(int depth, boolean isMax) {  // work on maximizer first
         int score = evaluate();
-        if ( score==10 || score==-10)
-            return score;
+        if ( score==10)
+            return score-depth;  // adjust score according depth, find optimal move
+        else if ( score==-10)
+            return score+depth;
         if (gameOver())
             return 0;
         if ( isMax ) {
