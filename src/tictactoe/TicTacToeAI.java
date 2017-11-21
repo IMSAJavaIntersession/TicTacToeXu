@@ -62,8 +62,8 @@ public class TicTacToeAI extends TicTacToe {
     public void computer()
     {
         moves++;
-        if (choose1stMove()) 
-            return;
+        //if (choose1stMove()) 
+        //    return;
         System.out.println("computer move "+moves);
         int best = -10000;
         int bestR=-1;

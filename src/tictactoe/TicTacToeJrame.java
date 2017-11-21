@@ -210,12 +210,12 @@ public class TicTacToeJrame extends javax.swing.JFrame {
     private void createBoard()
     {
         if (proLevel) {
-            board = new TicTacToePro();
+            board = new TicTacToeAI();
             System.out.println("pro board");
         }
         else {
-            board = new TicTacToeAI();
-            System.out.println("AI board");
+            board = new TicTacToe();
+            System.out.println("fun board");
         }
     }
     
