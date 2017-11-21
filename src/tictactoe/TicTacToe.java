@@ -26,6 +26,7 @@ public class TicTacToe {
             }
             System.out.println();
         }
+        //System.out.println("3x3 board");
     }
     
     public boolean isBlank(int r, int c)

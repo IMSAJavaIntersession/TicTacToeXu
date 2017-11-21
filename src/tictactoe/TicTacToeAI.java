@@ -4,6 +4,7 @@ package tictactoe;
 // http://www.geeksforgeeks.org/minimax-algorithm-in-game-theory-set-2-evaluation-function/
 
 import static java.lang.Math.max;
+import static java.lang.Math.min;
 
 // http://www.geeksforgeeks.org/minimax-algorithm-in-game-theory-set-3-tic-tac-toe-ai-finding-optimal-move/
 public class TicTacToeAI extends TicTacToe {
@@ -51,7 +52,7 @@ public class TicTacToeAI extends TicTacToe {
                     if ( !isBlank(r, c) )
                         continue;
                     setMove(r, c, false);
-                    score = max(score, minimax(depth+1, !isMax));
+                    score = min(score, minimax(depth+1, !isMax));
                     rollback(r,c);
                 }
             }
@@ -63,12 +64,28 @@ public class TicTacToeAI extends TicTacToe {
         moves++;
         if (choose1stMove()) 
             return;
-        System.out.println("next move");
+        System.out.println("computer move "+moves);
         int best = -10000;
+        int bestR=-1;
+        int bestC=-1;
         for (int r=0; r<BOARD_SIZE; r++) {
             for (int c=0; c<BOARD_SIZE; c++) {
-            
+                if (!isBlank(r,c))
+                    continue;
+                setMove(r, c, true);
+                int score=minimax(0, false);
+                rollback(r,c);
+                if (score>best) {
+                    best=score;
+                    bestR=r;
+                    bestC=c;
+                }
             }
+        }
+        if (bestR>=0) {
+            setMove(bestR, bestC, true);
+            System.out.println("computer move "+moves+":"+bestR+","+bestC+". Score="+best);
+            printBoard();
         }
     }
 }

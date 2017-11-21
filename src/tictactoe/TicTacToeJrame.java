@@ -148,7 +148,7 @@ public class TicTacToeJrame extends javax.swing.JFrame {
             for (int j=0; j<TicTacToe.BOARD_SIZE; j++)   {
                 if (board.getBoardValue(i, j)!='-') {
                     jButtons[i][j].setText(""+board.getBoardValue(i, j));
-                    System.out.println(""+i+" "+j+" "+board.getBoardValue(i, j));
+                    //System.out.println("display "+i+" "+j+" "+board.getBoardValue(i, j));
                     jButtons[i][j].setBackground(Color.lightGray);
                 }
                 else
@@ -214,8 +214,8 @@ public class TicTacToeJrame extends javax.swing.JFrame {
             System.out.println("pro board");
         }
         else {
-            board = new TicTacToe();
-            System.out.println("fun board");
+            board = new TicTacToeAI();
+            System.out.println("AI board");
         }
     }
     
