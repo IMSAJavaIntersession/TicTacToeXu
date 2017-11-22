@@ -9,6 +9,9 @@ import java.util.Map;
 import java.util.TreeMap;
 
 // http://www.geeksforgeeks.org/minimax-algorithm-in-game-theory-set-3-tic-tac-toe-ai-finding-optimal-move/
+// minimax idea:
+// maximizer return the max of value of all possible next move. if it is not leaf node, it is max of minimal of opponent moves
+// Likewise opponent is a minimizer
 public class TicTacToeAI extends TicTacToe {
         
     final char PLAYER='X';
@@ -37,7 +40,7 @@ public class TicTacToeAI extends TicTacToe {
             return score+depth;
         if (gameOver())
             return 0;
-        score = isMax?-10000:10000;
+        score = isMax?-10000:10000;  // initialize before min or max calc
         for (int r=0; r<BOARD_SIZE; r++) {
             for (int c=0; c<BOARD_SIZE; c++) {
                 if ( !isBlank(r, c) )
@@ -51,7 +54,7 @@ public class TicTacToeAI extends TicTacToe {
                 else
                     beta = min(beta, score);
                 if (beta<=alpha) {
-                    System.out.println("prune alpha="+alpha+" beta="+beta+" maximizer?"+isMax+" row="+r+" col="+c);
+                    //System.out.println("prune alpha="+alpha+" beta="+beta+" maximizer?"+isMax+" row="+r+" col="+c);
                     break;
                 }
             }
