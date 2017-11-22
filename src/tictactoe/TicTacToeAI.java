@@ -29,7 +29,7 @@ public class TicTacToeAI extends TicTacToe {
         return 0;
     }
     
-    int minimax(int depth, boolean isMax) {  // work on maximizer first
+    int minimax(int depth, boolean isMax, int alpha, int beta) {  // work on maximizer first
         int score = evaluate();
         if ( score==10)
             return score-depth;  // adjust score according depth, find optimal move
@@ -43,9 +43,17 @@ public class TicTacToeAI extends TicTacToe {
                 if ( !isBlank(r, c) )
                     continue;
                 setMove(r, c, isMax);
-                int newScore=minimax(depth+1, !isMax);
+                int newScore=minimax(depth+1, !isMax, alpha, beta);
                 score = isMax?max(score, newScore):min(score, newScore);
                 rollback(r,c);
+                if ( isMax )
+                    alpha = max(alpha, score);
+                else
+                    beta = min(beta, score);
+                if (beta<=alpha) {
+                    System.out.println("prune alpha="+alpha+" beta="+beta+" maximizer?"+isMax+" row="+r+" col="+c);
+                    break;
+                }
             }
         }
         return score;
@@ -93,7 +101,7 @@ public class TicTacToeAI extends TicTacToe {
                 if (!isBlank(r,c))
                     continue;
                 setMove(r, c, isMax);
-                int score=minimax(0, !isMax);
+                int score=minimax(0, !isMax, -10000, 10000);
                 rollback(r,c);
                 if (isMax && score>bm.score || !isMax &&score<bm.score) {
                     bm.score=score;
