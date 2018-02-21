@@ -11,7 +11,9 @@ import java.util.TreeMap;
 // http://www.geeksforgeeks.org/minimax-algorithm-in-game-theory-set-3-tic-tac-toe-ai-finding-optimal-move/
 // minimax idea:
 // maximizer return the max of value of all possible next move. if it is not leaf node, it is max of minimal of opponent moves
-// Likewise opponent is a minimizer
+// Likewise opponent is a minimizer, returm min of values of all possible next move. minimum of all maximizer values
+// alpha beta pruing is to eliminate unnecessary computation
+// For maximizer, 
 public class TicTacToeAI extends TicTacToe {
         
     final char PLAYER='X';
